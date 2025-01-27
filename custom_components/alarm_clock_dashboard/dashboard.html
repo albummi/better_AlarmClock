@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alarm Clock Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        input[type="time"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Alarm Clock</h1>
+        <label for="alarm-time">Set Alarm Time:</label>
+        <input type="time" id="alarm-time" value="07:00">
+        <button id="alarm-toggle" class="button">Enable Alarm</button>
+        <p id="status"></p>
+    </div>
+    <script>
+        const button = document.getElementById("alarm-toggle");
+        const timeInput = document.getElementById("alarm-time");
+        const status = document.getElementById("status");
+
+        button.addEventListener("click", () => {
+            const alarmTime = timeInput.value;
+            const isEnabled = button.textContent === "Enable Alarm";
+
+            fetch("/api/alarm_clock_dashboard", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ alarm_time: alarmTime, enabled: isEnabled })
+            }).then(response => {
+                if (response.ok) {
+                    button.textContent = isEnabled ? "Disable Alarm" : "Enable Alarm";
+                    status.textContent = `Alarm ${isEnabled ? "enabled" : "disabled"} for ${alarmTime}`;
+                } else {
+                    status.textContent = "Failed to update alarm.";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

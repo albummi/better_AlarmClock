@@ -1,0 +1,10 @@
+{
+  "title": "Alarm Clock Dashboard",
+  "description": "Set up and manage your custom alarm clock dashboard.",
+  "step": {
+    "user": {
+      "title": "Setup Alarm Clock Dashboard",
+      "description": "Would you like to enable the alarm clock dashboard?"
+    }
+  }
+}
